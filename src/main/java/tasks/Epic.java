@@ -7,19 +7,19 @@ public class Epic extends Task {
 
     public Epic(String name, int Id, String specification, Status status) {
         super(name, Id, specification, status);
-        super.getType = TaskType.EPIC;
+        super.type = TaskType.EPIC;
         subTaskIds = new ArrayList<>();
+    }
 
+    public Epic(String name, int Id, String specification, Status status, String localDateTime, int duration){
+        super(name, Id, specification, status, localDateTime, duration);
+        super.type = TaskType.EPIC;
+        subTaskIds = new ArrayList<>();
     }
 
     @Override
     public int getId() {
         return super.getId();
-    }
-
-    @Override
-    public Integer getEpicId() {
-        return null;
     }
 
     public void addSubtaskId(int subTaskId) {
@@ -30,7 +30,7 @@ public class Epic extends Task {
         return subTaskIds;
     }
 
-    public void removeSubTaskId(int subTasksId) {
+    public void removeSubTaskId(Integer subTasksId) {
         subTaskIds.remove(subTasksId);
     }
 
@@ -42,10 +42,14 @@ public class Epic extends Task {
     public String toString() {
         return "Epic{" +
                 "subTaskIds=" + subTaskIds +
+                ", type=" + type +
                 ", name='" + name + '\'' +
                 ", id=" + id +
                 ", specification='" + specification + '\'' +
-                ", status='" + status + '\'' +
+                ", status=" + status +
+                ", startTime=" + startTime +
+                ", duration=" + duration +
+                ", endTime=" + endTime +
                 '}';
     }
 }

@@ -1,13 +1,12 @@
 package manager;
 
+import converter.CSVTaskConverter;
+import exception.ManagerSaveException;
 import tasks.*;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static java.util.List.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private File file;
@@ -44,17 +43,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 } else {
                     Task task = CSVTaskConverter.fromString(reader.get(i));
 
-                    if (task.getGetType().equals(TaskType.TASK)) {
+                    if (task.getType().equals(TaskType.TASK)) {
                         if (task.getId() > newGeneratorId)
                             newGeneratorId = task.getId();
                         fileBackedTasksManager.tasks.put(task.getId(), task);
                     }
-                    if (task.getGetType().equals(TaskType.EPIC)) {
+                    if (task.getType().equals(TaskType.EPIC)) {
                         if (task.getId() > newGeneratorId)
                             newGeneratorId = task.getId();
                         fileBackedTasksManager.epics.put(task.getId(), (Epic) task);
                     }
-                    if (task.getGetType().equals(TaskType.SUBTASK)) {
+                    if (task.getType().equals(TaskType.SUBTASK)) {
                         if (task.getId() > newGeneratorId)
                             newGeneratorId = task.getId();
                         fileBackedTasksManager.subTasks.put(task.getId(), (SubTask) task);
@@ -62,7 +61,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 }
                 fileBackedTasksManager.generationId = newGeneratorId + 1;
             }
-            for (Task subTask : fileBackedTasksManager.subTasks.values()) {
+            for (SubTask subTask : fileBackedTasksManager.subTasks.values()) {
                 Integer epicSubTaskId = subTask.getEpicId();
                 for (Integer epicId : fileBackedTasksManager.epics.keySet()) {
                     Epic epic = fileBackedTasksManager.epics.get(epicId);
