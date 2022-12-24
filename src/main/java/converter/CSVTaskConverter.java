@@ -3,20 +3,22 @@ package converter;
 import manager.HistoryManager;
 import tasks.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSVTaskConverter {
 
     public static String getHeader() {
-        String getHeader = "id,type,name,status,description,epic";
+        String getHeader = "id,type,name,status,description,epic,startTime,duration";
         return getHeader;
     }
 
-    //TaskType.valueOf(task.getName().toUpperCase().substring(0, 4))
     public static String toString(Task task) {
-        if(task.getType().equals(TaskType.SUBTASK)){
-            SubTask subTask = (SubTask)task;
+        if (task.getType().equals(TaskType.SUBTASK)) {
+            SubTask subTask = (SubTask) task;
             return subTask.getId()
                     + ","
                     + subTask.getType()
@@ -27,7 +29,12 @@ public class CSVTaskConverter {
                     + ","
                     + subTask.getSpecification()
                     + ","
-                    + subTask.getEpicId();
+                    + subTask.getEpicId()
+                    + ","
+                    + subTask.getStartTime()
+                    + ","
+                    + subTask.getDuration();
+
         }
         return task.getId()
                 + ","
@@ -39,7 +46,11 @@ public class CSVTaskConverter {
                 + ","
                 + task.getSpecification()
                 + ","
-                + null;
+                + null
+                + ","
+                + task.getStartTime()
+                + ","
+                + task.getDuration();
     }
 
     public static Task fromString(String value) {
@@ -47,14 +58,34 @@ public class CSVTaskConverter {
         TaskType taskType = TaskType.valueOf(taskString[1]);
         switch (taskType) {
             case TASK: {
+                if(taskString[6] == null || taskString[6].isEmpty()) {
+                    return new Task(
+                            taskString[2],
+                            Integer.parseInt(taskString[0]),
+                            taskString[4],
+                            Status.valueOf(taskString[3])
+                    );
+                }
                 return new Task(
                         taskString[2],
                         Integer.parseInt(taskString[0]),
                         taskString[4],
-                        Status.valueOf(taskString[3])
+                        Status.valueOf(taskString[3]),
+                        taskString[6],
+                        taskString[7]
                 );
             }
             case EPIC: {
+                if(taskString[6] != null ) {
+                    return new Epic(
+                            taskString[2],
+                            Integer.parseInt(taskString[0]),
+                            taskString[4],
+                            Status.valueOf(taskString[3]),
+                            taskString[6],
+                            taskString[7]
+                    );
+                }
                 return new Epic(
                         taskString[2],
                         Integer.parseInt(taskString[0]),
@@ -68,8 +99,12 @@ public class CSVTaskConverter {
                         Integer.parseInt(taskString[0]),
                         taskString[4],
                         Status.valueOf(taskString[3]),
+                        taskString[6],
+                        taskString[7],
                         Integer.parseInt(taskString[5])
                 );
+
+
             }
             default:
                 return null;
@@ -96,6 +131,4 @@ public class CSVTaskConverter {
         }
         return history;
     }
-
-
 }

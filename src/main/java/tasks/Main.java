@@ -11,85 +11,86 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager manager = Manager.getDefault();
-
-        Task task1 = new Task(
-                "task1",
-                0, "убраться",
-                Status.NEW,
-                "14:39 20.12.2022",
-                30
-        );
-        Epic epic1 = new Epic(
-                "Epic1",
-                0,
-                "Организовать переезд",
-                Status.NEW,
-                "14:37 20.12.2022",
-                45
-        );
-
-        SubTask subTask1 = new SubTask(
-                "Подготовка к переезду",
-                0,
-                "Собрать вещи",
-                Status.NEW,
-                "15:39 20.12.2022",
-                30,
-                1
-        );
-
-        SubTask subTask2 = new SubTask(
-                "Подготовка к переезду",
-                0,
-                "Собрать вещи",
-                Status.NEW,
-                "17:39 20.12.2022",
-                30,
-                1
-        );
-        Task task7 = new Task("Task7", 0, "собрать коробки", Status.NEW);
-
-        SubTask subTask3 = new SubTask(
-                "Подготовка к переезду",
-                0,
-                "Собрать вещи",
-                Status.NEW,
-                "19:39 20.12.2022",
-                30,
-                1
-        );
-        Task task2 = new Task(
-                "task2",
-                0, "убраться",
-                Status.NEW,
-                "14:33 21.12.2022",
-                30
-        );
-        Task task8 = new Task("Task8", 0, "собрать коробки", Status.NEW);
-        Task task3 = new Task(
-                "task3",
-                0, "убраться",
-                Status.NEW,
-                "14:33 19.12.2022",
-                30
-        );
-
-
-        manager.addTask(task1);
-        manager.addEpic(epic1);
-        manager.addSubtask(subTask1);
-        manager.addSubtask(subTask2);
-        manager.addTask(task8);
-        manager.addSubtask(subTask3);
-        manager.addTask(task2);
-        manager.addTask(task3);
-        manager.addTask(task7);
+        TaskManager manager = Manager.getFileTaskManager("test.csv");
         System.out.println(manager.getTasks());
         System.out.println(manager.getEpics());
         System.out.println(manager.getSubTask());
-
         System.out.println("список приоритетных задач" + manager.getPrioritizedTasks());
+//
+//        Task task1 = new Task(
+//                "task1",
+//                0, "убраться",
+//                Status.NEW,
+//                "2022-12-21T09:25",
+//                "PT30S"
+//        );
+//        Epic epic1 = new Epic(
+//                "Epic1",
+//                0,
+//                "Организовать переезд",
+//                Status.NEW,
+//                "2022-12-21T11:21",
+//                "PT60S"
+//        );
+
+//        SubTask subTask1 = new SubTask(
+//                "Подготовка к переезду",
+//                0,
+//                "Собрать вещи",
+//                Status.NEW,
+//                "2022-12-21T12:21",
+//                "PT30S",
+//                1
+//        );
+
+//        SubTask subTask2 = new SubTask(
+//                "Подготовка к переезду",
+//                0,
+//                "Собрать вещи",
+//                Status.NEW,
+//                1
+//        );
+        // Task task7 = new Task("Task7", 0, "собрать коробки", Status.NEW);
+
+//        SubTask subTask3 = new SubTask(
+//                "Подготовка к переезду",
+//                0,
+//                "Собрать вещи",
+//                Status.NEW,
+//                "2022-12-21T13:25",
+//                "PT40S",
+//                1
+//        );
+//        Task task2 = new Task(
+//                "task2",
+//                0, "убраться",
+//                Status.NEW,
+//                "2022-12-21T09:25",
+//                "PT30S"
+//        );
+//        Task task8 = new Task("Task8", 0, "3", Status.DONE);
+//        Task task3 = new Task(
+//                "task3",
+//                0, "убраться",
+//                Status.NEW,
+//                "2022-12-21T17:11",
+//                "PT30S"
+//        );
+//
+//        manager.addTask(task1);
+//        manager.addEpic(epic1);
+//        manager.addSubtask(subTask1);
+//       // manager.addSubtask(subTask2);
+//       // manager.addTask(task8);
+//        manager.addSubtask(subTask3);
+//        manager.addTask(task2);
+//        manager.addTask(task3);
+//       // manager.addTask(task7);
+//        System.out.println(manager.getTasks());
+//        System.out.println(manager.getEpics());
+//        System.out.println(manager.getSubTask());
+//
+//        System.out.println("список приоритетных задач" + manager.getPrioritizedTasks());
 //        System.out.println(manager.getTasks());
 //        System.out.println("История " + manager.getHistory());
 //        System.out.println(manager.getEpics());

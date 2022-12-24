@@ -12,7 +12,7 @@ public class Task implements Comparable<Task> {
     protected String specification;
     protected Status status;
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
-    public static final DateTimeFormatter DURATION = DateTimeFormatter.ofPattern("HH:mm");
+    public static final DateTimeFormatter DURATION = DateTimeFormatter.ofPattern("mm");
     protected LocalDateTime startTime;
     protected Duration duration;
     protected LocalDateTime endTime;
@@ -25,13 +25,13 @@ public class Task implements Comparable<Task> {
         type = TaskType.TASK;
     }
 
-    public Task(String name, int Id, String specification, Status status, String localDateTime, int duration) {
+    public Task(String name, int Id, String specification, Status status, String localDateTime, String duration) {
         this.name = name;
         this.id = Id;
         this.specification = specification;
         this.status = status;
-        this.startTime = LocalDateTime.parse(localDateTime, DATE_TIME_FORMATTER);
-        this.duration = Duration.ofMinutes(duration);
+        this.startTime = LocalDateTime.parse(localDateTime);
+        this.duration =  Duration.parse(duration);
         type = TaskType.TASK;
         endTime = startTime.plus(this.duration);
     }
@@ -132,6 +132,15 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task o) {
+        if (this.getStartTime() == null && o.getStartTime() == null) {
+            return 0;
+        }
+        if (o.getStartTime() == null) {
+            return -1;
+        }
+        if(this.getStartTime() == null) {
+            return 1;
+        }
         return this.getStartTime().compareTo(o.getStartTime());
     }
 }
