@@ -17,6 +17,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         this.file = file;
     }
 
+    public FileBackedTasksManager() {
+    }
+
     public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file);// Создать через конструктор FileBackedTasksManager
         try {

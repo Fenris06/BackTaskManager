@@ -3,9 +3,6 @@ package converter;
 import manager.HistoryManager;
 import tasks.*;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +55,7 @@ public class CSVTaskConverter {
         TaskType taskType = TaskType.valueOf(taskString[1]);
         switch (taskType) {
             case TASK: {
-                if(taskString[6] == null || taskString[6].isEmpty()) {
+                if (taskString[6].length() == 4) {
                     return new Task(
                             taskString[2],
                             Integer.parseInt(taskString[0]),
@@ -72,39 +69,44 @@ public class CSVTaskConverter {
                         taskString[4],
                         Status.valueOf(taskString[3]),
                         taskString[6],
-                        taskString[7]
+                        Integer.parseInt(taskString[7])
                 );
             }
             case EPIC: {
-                if(taskString[6] != null ) {
+                if (taskString[6].length() == 4)
                     return new Epic(
                             taskString[2],
                             Integer.parseInt(taskString[0]),
                             taskString[4],
-                            Status.valueOf(taskString[3]),
-                            taskString[6],
-                            taskString[7]
+                            Status.valueOf(taskString[3])
                     );
-                }
                 return new Epic(
                         taskString[2],
                         Integer.parseInt(taskString[0]),
                         taskString[4],
-                        Status.valueOf(taskString[3])
+                        Status.valueOf(taskString[3]),
+                        taskString[6],
+                        Integer.parseInt(taskString[7])
                 );
             }
             case SUBTASK: {
+                if (taskString[6].length() == 4)
+                    return new SubTask(
+                            taskString[2],
+                            Integer.parseInt(taskString[0]),
+                            taskString[4],
+                            Status.valueOf(taskString[3]),
+                            Integer.parseInt(taskString[5])
+                    );
                 return new SubTask(
                         taskString[2],
                         Integer.parseInt(taskString[0]),
                         taskString[4],
                         Status.valueOf(taskString[3]),
                         taskString[6],
-                        taskString[7],
+                        Integer.parseInt(taskString[7]),
                         Integer.parseInt(taskString[5])
                 );
-
-
             }
             default:
                 return null;

@@ -2,10 +2,11 @@ package manager;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class Manager {
-    public static TaskManager getDefault() {
-        return new InMemoryTaskManager();
+    public static TaskManager getDefault() throws URISyntaxException, IOException, InterruptedException {
+        return new HttpTaskManager("http://localhost:8078");
     }
 
     public static HistoryManager getDefaultHistory() {

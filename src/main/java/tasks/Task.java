@@ -1,8 +1,6 @@
 package tasks;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task implements Comparable<Task> {
@@ -11,10 +9,9 @@ public class Task implements Comparable<Task> {
     protected int id;
     protected String specification;
     protected Status status;
-    public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm dd.MM.yyyy");
-    public static final DateTimeFormatter DURATION = DateTimeFormatter.ofPattern("mm");
+    protected LocalDateTime format;
     protected LocalDateTime startTime;
-    protected Duration duration;
+    protected int duration;
     protected LocalDateTime endTime;
 
     public Task(String name, int Id, String specification, Status status) {
@@ -25,15 +22,15 @@ public class Task implements Comparable<Task> {
         type = TaskType.TASK;
     }
 
-    public Task(String name, int Id, String specification, Status status, String localDateTime, String duration) {
+    public Task(String name, int Id, String specification, Status status, String localDateTime, int duration) {
         this.name = name;
         this.id = Id;
         this.specification = specification;
         this.status = status;
-        this.startTime = LocalDateTime.parse(localDateTime);
-        this.duration =  Duration.parse(duration);
+        this.startTime =  LocalDateTime.parse(localDateTime);
+        this.duration =  duration;
         type = TaskType.TASK;
-        endTime = startTime.plus(this.duration);
+        endTime = startTime.plusMinutes(duration);
     }
 
     public LocalDateTime getEndTime() {
@@ -44,11 +41,11 @@ public class Task implements Comparable<Task> {
         this.endTime = endTime;
     }
 
-    public Duration getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(Duration duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
