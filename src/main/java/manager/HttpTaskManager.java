@@ -32,11 +32,11 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
             String subTasksJson = gson.toJson(new ArrayList<>(subTasks.values()));
 
-            client.put("subTasks", epicJson);
+            client.put("subTasks", subTasksJson);
 
             String historyJson = gson.toJson(getHistory());
 
-            client.put("history", epicJson);
+            client.put("history", historyJson);
 
             String prioritizedTasksJson = gson.toJson(getPrioritizedTasks());
 

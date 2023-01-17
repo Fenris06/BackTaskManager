@@ -39,7 +39,7 @@ public class KVTaskClient {
     public String load(String key)throws URISyntaxException, IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(new URI(urlKVServer + "/load?" + key + "?API_TOKEN=" + apiToken))
+                .uri(new URI(urlKVServer + "/load/" + key + "?API_TOKEN=" + apiToken))
                 .build();
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
         try {
