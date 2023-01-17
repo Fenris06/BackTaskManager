@@ -33,8 +33,7 @@ public class KVTaskClient {
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(new URI(urlKVServer + "/save/" + key + "?API_TOKEN=" + apiToken))
                 .build();
-        HttpResponse.BodyHandler<Void> handler = HttpResponse.BodyHandlers.discarding();
-        client.send(request, handler);
+        client.send(request, HttpResponse.BodyHandlers.discarding());
     }
 
     public String load(String key)throws URISyntaxException, IOException, InterruptedException {
@@ -43,8 +42,11 @@ public class KVTaskClient {
                 .uri(new URI(urlKVServer + "/load?" + key + "?API_TOKEN=" + apiToken))
                 .build();
         HttpResponse.BodyHandler<String> handler = HttpResponse.BodyHandlers.ofString();
-        HttpResponse<String> response = client.send(request, handler);
-        return response.body();
+        try {
+            HttpResponse<String> response = client.send(request, handler);
+            return response.body();
+        } catch (IOException exception) {
+            return null;
+        }
     }
 }
-

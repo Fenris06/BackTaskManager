@@ -47,31 +47,42 @@ public class HttpTaskManager extends FileBackedTasksManager {
     }
 
     public void load() throws URISyntaxException, IOException, InterruptedException {
-        Map<Integer, Task> tempTasks = gson.fromJson(client.load("tasks"), new TypeToken<>() {
-        });
+        if (client.load("tasks") != null) {
+            Map<Integer, Task> tempTasks = gson.fromJson(client.load("tasks"), new TypeToken<>() {
+            });
 
-        tasks.putAll(Optional.ofNullable(tempTasks).orElse(new HashMap<>()));
+            tasks.putAll(Optional.ofNullable(tempTasks).orElse(new HashMap<>()));
+        }
 
-        Map<Integer, Epic> tempEpics = gson.fromJson(client.load("epics"), new TypeToken<>() {
-        });
+        if (client.load("epics") != null) {
+            Map<Integer, Epic> tempEpics = gson.fromJson(client.load("epics"), new TypeToken<>() {
+            });
 
-        epics.putAll(Optional.ofNullable(tempEpics).orElse(new HashMap<>()));
+            epics.putAll(Optional.ofNullable(tempEpics).orElse(new HashMap<>()));
+        }
 
-        Map<Integer, SubTask> tempSubTask = gson.fromJson(client.load("subTasks"), new TypeToken<>() {
-        });
+        if (client.load("subTasks") != null) {
+            Map<Integer, SubTask> tempSubTask = gson.fromJson(client.load("subTasks"), new TypeToken<>() {
+            });
 
-        subTasks.putAll(Optional.ofNullable(tempSubTask).orElse(new HashMap<>()));
+            subTasks.putAll(Optional.ofNullable(tempSubTask).orElse(new HashMap<>()));
+        }
 
-        Set<Task> prioriTasks = gson.fromJson(client.load("prioritizedTasks"), new TypeToken<>() {
-        });
+        if (client.load("prioritizedTasks") != null) {
+            Set<Task> prioriTasks = gson.fromJson(client.load("prioritizedTasks"), new TypeToken<>() {
+            });
 
-        prioritizedTasks.addAll(Optional.ofNullable(prioriTasks).orElse(new HashSet<>()));
+            prioritizedTasks.addAll(Optional.ofNullable(prioriTasks).orElse(new HashSet<>()));
+        }
 
-        List<Task> jsonHistory = gson.fromJson(client.load("history"), new TypeToken<>() {});
-        List<Task> tempHistory = Optional.ofNullable(jsonHistory).orElse(new ArrayList<>());
+        if (client.load("history") != null) {
+            List<Task> jsonHistory = gson.fromJson(client.load("history"), new TypeToken<>() {
+            });
+            List<Task> tempHistory = Optional.ofNullable(jsonHistory).orElse(new ArrayList<>());
 
-        for (Task task : tempHistory) {
-            historyManager.add(task);
+            for (Task task : tempHistory) {
+                historyManager.add(task);
+            }
         }
     }
 }
