@@ -1,7 +1,6 @@
 package server;
 
 
-
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -23,53 +22,20 @@ import java.util.regex.Pattern;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class HttpTaskServer {
-    private final TaskManager taskManager;
+    private TaskManager taskManager;
     private static final int PORT = 8080;
     private final HttpServer taskServer;
     private static Gson gson;
 
-    public HttpTaskServer() throws IOException, URISyntaxException, InterruptedException {
+    public HttpTaskServer(TaskManager manager) throws IOException, URISyntaxException, InterruptedException {
         gson = new Gson(); // пока так
-        this.taskManager = Manager.getDefault();
+        this.taskManager = manager;
         this.taskServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
         taskServer.createContext("/tasks/task", this::tasksHandler);
         taskServer.createContext("/tasks/epic", this::epicHandler);
         taskServer.createContext("/tasks/subtask", this::subTaskHandler);
         taskServer.createContext("/tasks", this::prioritizedAndHistoryHandler);
     }
-
-//    public static void main(String[] args) throws IOException {
-//        HttpTaskServer httpTaskServer = new HttpTaskServer();
-//        Task task1 = new Task(
-//                "task1",
-//                0, "убраться",
-//                Status.NEW,
-//                "2022-12-21T09:25",
-//                30
-//        );
-//        Epic epic1 = new Epic(
-//                "Epic1",
-//                0,
-//                "Организовать переезд",
-//                Status.NEW
-//        );
-//        SubTask subTask1 = new SubTask(
-//                "Подготовка к переезду",
-//                0,
-//                "Собрать вещи",
-//                Status.NEW,
-//                "2022-12-21T12:21",
-//                30,
-//                0
-//        );
-
-
-//        String st = gson.toJson(task1);
-//        System.out.println(st);
-//        httpTaskServer.taskManager.addTask(epic1);
-//        httpTaskServer.taskManager.addSubtask(subTask1);
-//        httpTaskServer.start();
-//    }
 
     private void tasksHandler(HttpExchange httpExchange) {
         try {
@@ -376,8 +342,8 @@ public class HttpTaskServer {
             switch (requestMethod) {
                 case "GET": {
                     if (Pattern.matches("^/tasks/history$", path)) {
-                        if(taskManager.getHistory().isEmpty()) {
-                            writeServiceResponse(httpExchange, "Tasks not add" , 405);
+                        if (taskManager.getHistory().isEmpty()) {
+                            writeServiceResponse(httpExchange, "Tasks not add", 405);
                         } else {
                             String response = gson.toJson(taskManager.getHistory());
                             sendText(httpExchange, response);
@@ -385,7 +351,7 @@ public class HttpTaskServer {
                         }
                     } else {
                         if (taskManager.getPrioritizedTasks().isEmpty()) {
-                            writeServiceResponse(httpExchange, "Tasks not add" , 405);
+                            writeServiceResponse(httpExchange, "Tasks not add", 405);
                         } else {
                             String response = gson.toJson(taskManager.getPrioritizedTasks());
                             sendText(httpExchange, response);
@@ -451,4 +417,3 @@ public class HttpTaskServer {
 
 
 }
-
